@@ -1,9 +1,11 @@
 // src/components/OnboardingForm.js
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const OnboardingForm = () => {
   const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('');
   const [height, setHeight] = useState('');
@@ -13,10 +15,12 @@ const OnboardingForm = () => {
   const [currentFitnessLevel, setCurrentFitnessLevel] = useState('');
   const [workoutPreferences, setWorkoutPreferences] = useState('');
   const [dietaryPreferences, setDietaryPreferences] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = () => {
     const userData = {
       name,
+      email,
       userBioMetrics: {
         age,
         gender,
@@ -30,10 +34,9 @@ const OnboardingForm = () => {
       dietaryPreferences,
     };
 
-    axios.post(`${process.env.API_URL_PATH}/onboard`, userData)
+    axios.post(`${process.env.API_URL_PATH}/register`, userData)
       .then(response => {
-        console.log(response.data);
-        alert('User onboarded successfully!');
+        navigate('/workout_plan');
       })
       .catch(error => {
         console.error(error);
@@ -51,6 +54,15 @@ const OnboardingForm = () => {
             placeholder="Name"
             value={name}
             onChange={e => setName(e.target.value)}
+          />
+        </div>
+        <div className="mb-4">
+          <input
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Email"
+            value={email}
+            type='email'
+            onChange={e => setEmail(e.target.value)}
           />
         </div>
         <div className="mb-4">
