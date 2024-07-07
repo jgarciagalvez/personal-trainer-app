@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+const apiURL = process.env.REACT_APP_API_URL_PATH;
+
 const OnboardingForm = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -21,20 +23,18 @@ const OnboardingForm = () => {
     const userData = {
       name,
       email,
-      userBioMetrics: {
-        age,
-        gender,
-        height,
-        weight,
-        fatPercentage
-      },
+      age,
+      gender,
+      height,
+      weight,
+      fatPercentage,
       fitnessGoals,
       currentFitnessLevel,
       workoutPreferences,
       dietaryPreferences,
     };
 
-    axios.post(`${process.env.API_URL_PATH}/register`, userData)
+    axios.post(`${apiURL}/register`, userData)
       .then(response => {
         navigate('/workout_plan');
       })

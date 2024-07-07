@@ -2,20 +2,23 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
+const apiURL = process.env.REACT_APP_API_URL_PATH;
+
 const WorkoutPlan = () => {
   const [workoutPlan, setWorkoutPlan] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false)
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    axios.get(`${process.env.API_URL_PATH}/get_workout`)
+    // `${process.env.REACT_APP_API_URL_PATH}/houses/`
+    axios.get(`${apiURL}/get_workout`)
       .then(response => {
         setWorkoutPlan(response.data);
         setLoading(false);
       })
       .catch(error => {
         console.error(error);
-        setError(true);
+        setError('Failed to load workout plan.');
         setLoading(false);
       });
   }, []);
@@ -32,7 +35,7 @@ const WorkoutPlan = () => {
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
-        <img src="/error.gif" alt="Loading" className="w-16 h-16 mb-4" />
+        <img src="/error.gif" alt="Error" className="w-16 h-16 mb-4" />
         <p className="text-lg">There was an error with your training plan</p>
       </div>
     );
